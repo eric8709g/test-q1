@@ -1,15 +1,17 @@
 <template>
     <div style="text-align: center;">
-        <div>登入</div>
+        <h1 class="text-blue-400">登入</h1>
         <div>
-            <span>帳號</span><input v-model="username" type="text" />
+            <span style="margin-right: 10px;">帳號</span><input v-model="username" type="text"
+                                  placeholder='請輸入帳號' style="border: 2px solid black; width: 280px; font-size: 12px;"/>
         </div>
         <div>
-            <span>密碼</span><input v-model="password" type="password" id="id_password"/>
+            <span style="margin-right: 10px;">密碼</span><input v-model="password" type="password" id="id_password"
+                                  placeholder='請輸入密碼' style="border: 2px solid black; width: 280px; font-size: 12px;"/>
             <i class="far fa-eye" id="togglePassword" style="margin-left: -20px; cursor: pointer;"></i>
         </div>
         <p><span style="color: deepskyblue; cursor: pointer;" @click="toRegisterPage">註冊</span></p>
-        <button class="login-button">登入</button>
+        <button class="login-button" @click="onLogin">登入</button>
     </div>
 </template>
 
@@ -25,9 +27,20 @@
         methods: {
             toRegisterPage(){
                 this.$router.push('/register')
+            },
+            onLogin(){
+                this.$api.Login.userLogin({
+                    username: this.username,
+                    password: this.password
+                }).then(res=>{
+                    alert(res.data.message)
+                    this.$router.push('/home')
+                })
             }
         },
         mounted() {
+            this.username = this.$store.state.userName
+            this.password = this.$store.state.password
             const togglePassword = document.querySelector('#togglePassword');
             const password = document.querySelector('#id_password');
 
